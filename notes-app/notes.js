@@ -22,6 +22,8 @@ const saveNote = (notes) => {
 const addNote = (title, body) => {
     const notes = loadNotes();
     const duplicateNote = notes.find((note) => note.title === title);
+
+    debugger;
     if (duplicateNote) {
         console.log(chalk.red('Note title taken!'));
     } else {
@@ -47,7 +49,8 @@ const deleteNote = (title) => {
         console.log(chalk.red.inverse('No note found!'));
     }
 };
-
+// ------------------------------------------------
+// * Delete all notes
 const deleteAll = () => {
     const notes = loadNotes();
     if (notes.length > 0) {
@@ -57,4 +60,45 @@ const deleteAll = () => {
         console.log(chalk.red.inverse('No notes found!'));
     }
 };
-module.exports = { addNote: addNote, deleteNote: deleteNote, deleteAll: deleteAll };
+
+// ------------------------------------------------
+// * List all note
+
+const listNotes = () => {
+    const notes = loadNotes();
+    console.log(chalk.blue('Your notes: '));
+    if (notes.length > 0) {
+        notes.forEach((note) => {
+            console.log(note.title, note.body);
+        });
+    } else {
+        console.log(chalk.red.inverse('No notes found!'));
+    }
+};
+// ------------------------------------------------
+
+// ------------------------------------------------
+// * Read a note
+
+const readNote = (title) => {
+    const notes = loadNotes();
+
+    const wantedNotes = notes.find((note) => note.title === title);
+
+    if (wantedNotes) {
+        console.log(chalk.blue('Title: ') + chalk.magenta(wantedNotes.title));
+        console.log(chalk.blue('Body: ') + chalk.magenta(wantedNotes.body));
+    } else {
+        console.log(chalk.red.inverse('No note found!'));
+    }
+};
+
+// ------------------------------------------------
+// * module exports
+module.exports = {
+    addNote: addNote,
+    deleteNote: deleteNote,
+    deleteAll: deleteAll,
+    listNotes: listNotes,
+    readNote: readNote,
+};
