@@ -53,19 +53,27 @@ yargs
         console.log(chalk.red(msg));
     });
 yargs.command({
+    command: 'delete-all',
+    describe: 'Delete all notes',
+    handler: () => notes.deleteAll(),
+});
+yargs.command({
     command: 'read',
     describe: 'Read a note',
-    handler: () => console.log(chalk.blue('Read a note...')),
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string',
+        },
+    },
+
+    handler: (args) => notes.readNote(args.title),
 });
 yargs.command({
     command: 'list',
     describe: 'List all notes',
-    handler: () => console.log(chalk.magenta('List all notes')),
-});
-yargs.command({
-    command: 'delete-all',
-    describe: 'Delete all notes',
-    handler: () => notes.deleteAll(),
+    handler: () => notes.listNotes(),
 });
 
 yargs.parse();
