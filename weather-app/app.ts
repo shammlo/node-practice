@@ -24,22 +24,36 @@ const url2 =
 //         console.log(chalk.red(error));
 //     });
 
-const command = process.argv[2];
+const address = process.argv[2];
+if (address) {
+    geocoding(
+        address,
+        (
+            error: Error | undefined,
+            geoData: { latitude: number; longitude: number; location: string } | undefined
+        ) => {
+            if (geoData) {
+                // console.log(chalk.green.inverse('Your geoData: '));
+                // console.log(geoData);
 
-geocoding(command, (error: Error | undefined, data: object | undefined) => {
-    if (data) {
-        console.log(chalk.green.inverse('Your Data: '));
-        console.log(data);
-    } else if (error) {
-        console.log(chalk.red(error));
-    }
-});
-
-// forecast(-75.7088, 44.1545, (error: Error, data: object) => {
-//     if (data) {
-//         console.log(chalk.green.inverse('Your Data: '));
-//         console.log(data);
-//     } else if (error) {
-//         console.log(chalk.red(error));
-//     }
-// });
+                forecast(geoData.latitude, geoData.longitude, (error: Error, weatherData: any) => {
+                    if (weatherData) {
+                        console.log(chalk.green.inverse('Your weatherData: '));
+                        console.log(
+                            chalk.blue(
+                                `Current Weather in ${weatherData.name} is ${weatherData.weather[0].description}, its currently ${weatherData.main.temp} out, it feels like ${weatherData.main.feels_like} out.`
+                            )
+                        );
+                        // console.log(weatherData);
+                    } else if (error) {
+                        console.log(chalk.red(error));
+                    }
+                });
+            } else if (error) {
+                console.log(chalk.red(error));
+            }
+        }
+    );
+} else {
+    console.log(chalk.red('Please provide an address'));
+}
