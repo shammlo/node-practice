@@ -24,4 +24,7 @@ app.get('/help', (req: Request, res: Response) => {
 app.get('/weather', (req: Request, res: Response) => {
     res.send('Weather page');
 });
+app.get('/welcome', (req: Request, res: Response) => {
+    res.send('welcome page');
+});
 app.listen(port, () => console.log(`Listening on port ${port}`));
