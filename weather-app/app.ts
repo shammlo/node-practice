@@ -9,21 +9,6 @@ const url =
 const url2 =
     'https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1Ijoic2hhbXp4IiwiYSI6ImNrZzVsN3dmYTB2aGwydXA0cTRjYTNlOHIifQ.PJEx5stm9_rUjgRzFQaLFg&limit=1';
 
-// axios
-//     .get(url)
-//     .then((response: any) => {
-//         console.log(response.data);
-
-//         console.log(
-//             chalk.blue(
-//                 `Current Weather in New York, its currently ${response.data.current.temperature} out, it feels like ${response.data.current.feelslike} out.`
-//             )
-//         );
-//     })
-//     .catch((error: any) => {
-//         console.log(chalk.red(error));
-//     });
-
 const address = process.argv[2];
 if (address) {
     geocoding(
