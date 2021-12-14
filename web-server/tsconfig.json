@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
-        "lib": ["DOM"]
+        "strictNullChecks": false,
+        "lib": ["DOM"],
+        "strict": true
     }
 }
