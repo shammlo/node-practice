@@ -5,15 +5,33 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/styles.css" />
-    <link rel="icon" href="/assets/images/weather.png" />
+    <link rel="stylesheet" href="/styles/css/main.min.css" />
+    <link rel="icon" href="/assets/images/weather-2-big.png" />
     <title>{{title}}</title>
 </head>
 
 <body>
     {{>header}}
-    <h1>{{name}}</h1>
-    
+    <main class="main">
+        <div class="container">
+            <div class="title">
+            <h1>{{name}}</h1>
+                <img src="/assets/images/weather-2-big.png" alt="weather-2-big" height="250" width="250"/>
+            </div>
+
+            <form action="" class="form">
+                <input type="search" name="address" placeholder="search for address" class="search-input" autofocus required/>
+                <button class="search-btn">Search</button>
+                <div class="weather-info">
+                    <p class="weather-location"></p>
+                    <p class="weather-latitude"></p>
+                    <p class="weather-longitude"></p>
+                </div>
+            </form>
+
+        </div>
+    </main>
+
     {{>footer}}
     <script src="/ts/main.js"></script>
 </body>
