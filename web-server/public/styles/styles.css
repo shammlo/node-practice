@@ -64,10 +64,6 @@ footer div {
 footer div p:nth-child(1) {
     margin-right: 20px;
 }
-.main .container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
 
 .main .form {
     background-color: #36393f;
@@ -112,12 +108,8 @@ footer div p:nth-child(1) {
 .main .form .search-btn:hover {
     background-color: rgb(73, 84, 201);
 }
-.main .form .search-input:-internal-autofill-selected {
-    background-color: rgb(48, 51, 57) !important;
-}
-.search-input:-webkit-autofill {
-    -webkit-background-color: rgb(48, 51, 57);
-}
 
-.search-input:autofill {
+.main .form .weather-info {
+    padding: 20px;
+    font-size: 18px;
 }
