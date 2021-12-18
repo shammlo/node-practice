@@ -24,7 +24,7 @@ const weatherAPI = async (address: string = '') => {
         console.error(error);
     }
 };
-const weatherForm: HTMLFormElement = document.querySelector('.form');
+const weatherForm: HTMLFormElement | null = document.querySelector('.form');
 const searchValue: HTMLInputElement = document.querySelector('.search-input');
 const latitudeText: HTMLElement = document.querySelector('.weather-latitude');
 const longitudeText: HTMLElement = document.querySelector('.weather-longitude');
