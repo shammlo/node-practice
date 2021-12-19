@@ -44,7 +44,7 @@ var weatherAPI = function (address) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch("http://localhost:3000/weather?address=" + address)];
+                    return [4 /*yield*/, fetch("/weather?address=" + address)];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];

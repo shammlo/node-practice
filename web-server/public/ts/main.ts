@@ -1,19 +1,8 @@
 console.log('Client side Typescript file is loaded');
 
 const weatherAPI = async (address: string = '') => {
-    // fetch(`http://localhost:3000/weather?address=${address}`).then((response) => {
-    //     response.json().then((data) => {
-    //         if (data.error) {
-    //             console.log(data.error);
-    //         } else {
-    //             return data;
-    //         }
-    //         return data;
-    //     });
-    // });
-
     try {
-        const response = await fetch(`http://localhost:3000/weather?address=${address}`);
+        const response = await fetch(`/weather?address=${address}`);
         const data = await response.json();
 
         if (data.error) {
