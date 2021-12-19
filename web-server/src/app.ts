@@ -37,7 +37,7 @@ hbs.registerPartials(partialsPath);
 
 // ----------------------------------------------------------------
 //- Express route handlers
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
     res.render('index', {
         title: 'Weather Page',
         name: 'Weather',
@@ -46,7 +46,7 @@ app.get('/', (req: Request, res: Response) => {
     });
 });
 
-app.get('/about', (req: Request, res: Response) => {
+app.get('/about', (_req: Request, res: Response) => {
     res.render('about', {
         title: 'About Page',
         name: 'About',
@@ -59,17 +59,17 @@ app.get('/weather', (req: Request, res: Response) => {
             error: 'You must provide an address!',
         });
     }
-    geocoding(
+    return geocoding(
         req.query.address,
         (error: Error, { latitude, longitude, location }: geoDataTypes = {}) => {
             if (error) {
                 return res.send({ error: error.message });
             }
-            forecast(latitude, longitude, (error: Error, weatherData: any) => {
+            return forecast(latitude, longitude, (error: Error, weatherData: any) => {
                 if (error) {
                     return res.send({ error });
                 }
-                res.send({
+                return res.send({
                     address: req.query.address,
                     location: location,
                     forecast: `Current Weather in ${weatherData.name} is ${weatherData.weather[0].description}, its currently ${weatherData.main.temp} out, it feels like ${weatherData.main.feels_like} out.`,
@@ -81,14 +81,14 @@ app.get('/weather', (req: Request, res: Response) => {
     );
 });
 
-app.get('/help', (req: Request, res: Response) => {
+app.get('/help', (_req: Request, res: Response) => {
     res.render('help', {
         title: 'Help Page',
         name: 'Help',
     });
 });
 
-app.get('/help/*', (req: Request, res: Response) => {
+app.get('/help/*', (_req: Request, res: Response) => {
     res.render('404', {
         title: '404 Page',
         error: 'Help article not found',
