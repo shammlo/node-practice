@@ -11,41 +11,20 @@ MongoClient.connect(mongodbURL, { useNewUrlParser: true }, (error: Error, client
     }
 
     const db = client.db(databaseName);
-    db.collection('users')
-        .find({ name: { $exists: true, $ne: null } })
-        .toArray((error: Error, users: any) => {
-            if (error) {
-                console.log(error);
-                return console.log('Unable to fetch users');
-            }
-            const duplicateUsers = users.filter((user: any, index: number, self: any) => {
-                return (
-                    self.findIndex((t: any) => {
-                        return t.name === user.name;
-                    }) !== index
-                );
-            });
-            return console.log(duplicateUsers);
-        });
-    // db.collection('users').insertMany(
-    //     [
-    //         {
-    //             name: 'Shamlo 1',
-    //             age: 26,
-    //         },
-    //         {
-    //             name: 'Shamlo 2',
-    //             age: 26,
-    //         },
-    //     ],
-    //     (error: Error, result: any) => {
-    //         if (error) {
-    //             return console.log('Unable to insert user');
-    //         }
 
-    //         return console.log(result.insertedIds);
-    //     }
-    // );
+    db.collection('tasks')
+        .deleteOne({
+            description: 'Clean the house',
+        })
+
+        .then((result: any) => {
+            console.log(result);
+        })
+        .catch((error: Error) => {
+            console.log(error);
+        });
+
+    //-------------- End -----------------
 });
 
 // -------------------------------
