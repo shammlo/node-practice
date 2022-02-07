@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------
 // *** TYPESCRIPT ***
 
-export interface Users {
+export interface User {
     _id: string;
     name: string;
     email: string;
@@ -10,7 +10,7 @@ export interface Users {
     __v: number;
 }
 
-export interface Tasks {
+export interface Task {
     _id: string;
     description: string;
     completed: boolean;
