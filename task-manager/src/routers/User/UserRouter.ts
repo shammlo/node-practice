@@ -10,9 +10,22 @@ router.post('/users', async (req: Request, res: Response) => {
 
     try {
         await user.save();
-        res.status(201).send(user);
+        const token = await user.generateAuthToken();
+        res.status(201).send({ user, token });
     } catch (error: unknown) {
         res.status(400).send(error);
+    }
+});
+
+router.post('/users/login', async (req: Request, res: Response) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password);
+
+        const token = await user.generateAuthToken();
+
+        res.status(200).send({ user, token });
+    } catch (error: any) {
+        res.status(400).send(error.message);
     }
 });
 
