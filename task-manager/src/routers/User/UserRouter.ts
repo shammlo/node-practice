@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 import { Response, Request } from 'express';
-import { UserType } from '../../util/types/Types';
-
+import { UserType, ReqUserType } from '../../util/types/Types';
+const AuthMiddleware = require('../../middleware/auth/AuthMiddleware');
 const User = require('../../models/user/User');
 
 router.post('/users', async (req: Request, res: Response) => {
@@ -29,13 +29,19 @@ router.post('/users/login', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/users/', async (_req: Request, res: Response) => {
+router.post('/users/logout', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     try {
-        const users = await User.find({});
-        res.send(users);
+        req.user.tokens = req.user.tokens.filter((token: any) => token.token !== req.token);
+
+        await req.user.save!();
+        res.status(200).send('Logged out');
     } catch (error: unknown) {
         res.status(500).send(error);
     }
+});
+
+router.get('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
+    res.send(req.user);
 });
 
 router.get('/users/:id', async (req: Request, res: Response) => {
