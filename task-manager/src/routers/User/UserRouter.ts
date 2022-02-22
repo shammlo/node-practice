@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 import { Response, Request } from 'express';
-import { UserType, ReqUserType } from '../../util/types/Types';
+import { ReqUserType } from '../../util/types/Types';
 const AuthMiddleware = require('../../middleware/auth/AuthMiddleware');
 const User = require('../../models/user/User');
 
@@ -40,27 +40,25 @@ router.post('/users/logout', AuthMiddleware, async (req: Request & ReqUserType, 
     }
 });
 
+router.post(
+    '/users/logout-all',
+    AuthMiddleware,
+    async (req: Request & ReqUserType, res: Response) => {
+        try {
+            req.user.tokens = [];
+            await req.user.save!();
+            res.status(200).send('Logged out of all devices');
+        } catch (error: unknown) {
+            res.status(500).send(error);
+        }
+    }
+);
+
 router.get('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     res.send(req.user);
 });
 
-router.get('/users/:id', async (req: Request, res: Response) => {
-    const _id = req.params.id;
-
-    try {
-        const user: UserType = await User.findById(_id);
-        if (!user) {
-            return res.status(404).send();
-        }
-        return res.send(user);
-    } catch (error: unknown) {
-        return res.status(500).send(error);
-    }
-});
-
-router.patch('/users/:id', async (req: Request, res: Response) => {
-    const _id = req.params.id;
-
+router.patch('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['name', 'email', 'password', 'age'];
 
@@ -70,36 +68,21 @@ router.patch('/users/:id', async (req: Request, res: Response) => {
         return res.status(400).send({ error: 'Invalid updates' });
     }
     try {
-        // const user = await User.findByIdAndUpdate(_id, req.body, {
-        //     new: true,
-        //     runValidators: true,
-        // });
+        updates.forEach((update) => (req.user[update] = req.body[update]));
+        await req.user.save!();
 
-        const user = await User.findById(_id);
-
-        updates.forEach((update) => (user[update] = req.body[update]));
-
-        await user.save();
-
-        if (!user) {
-            return res.status(404).send();
-        }
-        return res.send(user);
+        return res.send(req.user);
     } catch (error: any) {
         return res.status(500).send(error.message);
     }
 });
 
-router.delete('/users/:id', async (req: Request, res: Response) => {
-    const _id = req.params.id;
+router.delete('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     try {
-        const user: UserType = await User.findByIdAndDelete(_id);
-        if (!user) {
-            return res.status(404).send();
-        }
-        return res.send(user);
-    } catch (error: unknown) {
-        return res.status(500).send(error);
+        await req.user?.remove!();
+        return res.send(req.user);
+    } catch (error: any) {
+        return res.status(500).send(error.message);
     }
 });
 module.exports = router;
