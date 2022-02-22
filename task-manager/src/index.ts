@@ -11,7 +11,7 @@ const taskRouter = require('./routers/Task/TaskRouter');
 // ----------------------------------------------------------------
 const app = express();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 // -------------------------------
 // *** APP.USE() ***
