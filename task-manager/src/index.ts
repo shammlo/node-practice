@@ -32,13 +32,3 @@ app.use(taskRouter);
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
-const myFunction = async () => {
-    const token = jwt.sign({ _id: 'abc123' }, process.env.secretToUseJWT, { expiresIn: '7 days' });
-
-    const data = jwt.verify(token, process.env.secretToUseJWT);
-
-    return data;
-};
-
-myFunction();
