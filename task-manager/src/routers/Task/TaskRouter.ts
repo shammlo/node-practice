@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
 import { Response, Request } from 'express';
-import { TaskType } from '../../util/types/Types';
+import { ReqUserType } from '../../util/types/Types';
 const Task = require('../../models/task/Task');
-
-router.post('/tasks', async (req: Request, res: Response) => {
-    const task = new Task(req.body);
+const AuthMiddleware = require('../../middleware/auth/AuthMiddleware');
+router.post('/tasks', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
+    // const task = new Task(req.body);
+    const task = new Task({
+        ...req.body,
+        owner: req.user._id,
+    });
     try {
         await task.save();
         res.status(201).send(task);
@@ -14,20 +18,24 @@ router.post('/tasks', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/tasks', async (_req: Request, res: Response) => {
+router.get('/tasks', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     try {
-        const tasks: TaskType = await Task.find({});
-        res.send(tasks);
-    } catch (error: unknown) {
-        res.status(500).send(error);
+        // - option one
+        // const tasks = await Task.find({ owner: req.user._id });
+
+        // - option two
+        await req.user.populate!('tasks');
+        res.send(req.user.tasks);
+    } catch (error: any) {
+        res.status(500).send(error.message);
     }
 });
 
-router.get('/tasks/:id', async (req: Request, res: Response) => {
+router.get('/tasks/:id', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     const _id = req.params.id;
 
     try {
-        const task: TaskType = await Task.findById(_id);
+        const task = await Task.findOne({ _id, owner: req.user._id });
         if (!task) {
             return res.status(404).send();
         }
@@ -37,7 +45,7 @@ router.get('/tasks/:id', async (req: Request, res: Response) => {
     }
 });
 
-router.patch('/tasks/:id', async (req: Request, res: Response) => {
+router.patch('/tasks/:id', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     const _id = req.params.id;
     const update = Object.keys(req.body);
     const allowedUpdates = ['description', 'completed'];
@@ -47,28 +55,23 @@ router.patch('/tasks/:id', async (req: Request, res: Response) => {
         return res.status(400).send({ error: 'Invalid updates' });
     }
     try {
-        // const task: TaskType = await Task.findByIdAndUpdate(_id, req.body, {
-        //     new: true,
-        //     runValidators: true,
-        // });
+        const task = await Task.findOne({ _id, owner: req.user._id });
 
-        const task = await Task.findById(_id);
-
-        update.forEach((update) => (task[update] = req.body[update]));
-        await task.save();
         if (!task) {
             return res.status(404).send();
         }
+        update.forEach((update) => (task[update] = req.body[update]));
+        await task.save();
         return res.send(task);
     } catch (error: unknown) {
         return res.status(500).send(error);
     }
 });
 
-router.delete('/tasks/:id', async (req: Request, res: Response) => {
+router.delete('/tasks/:id', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     const _id = req.params.id;
     try {
-        const task: TaskType = await Task.findByIdAndDelete(_id);
+        const task = await Task.findOneAndDelete({ _id, owner: req.user._id });
         if (!task) {
             return res.status(404).send();
         }
