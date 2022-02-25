@@ -13,15 +13,30 @@ export interface UserType {
     save?: () => Promise<UserType>;
     remove?: () => Promise<void>;
     populate?: (
-        path: string,
-        select?: string,
-        match?: any,
-        options?: any
+        arg0:
+            | {
+                  path: string;
+                  select?: string;
+                  match?: {
+                      [key: string]: any;
+                  };
+                  options?: {
+                      [key: string]: any;
+                  };
+              }
+            | string
     ) => Promise<UserType> & {
         execPopulate: () => Promise<UserType>;
     };
 }
-
+//   populate?: ({
+//         path: string,
+//         select?: string,
+//         match?: any,
+//         options?: any}
+//     ) => Promise<UserType> & {
+//         execPopulate: () => Promise<UserType>;
+//     };
 export interface TaskType {
     _id: string;
     description: string;
