@@ -19,12 +19,31 @@ router.post('/tasks', AuthMiddleware, async (req: Request & ReqUserType, res: Re
 });
 
 router.get('/tasks', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
+    const match: { [key: string]: boolean } = {};
+    const sort: { [key: string]: number } = {};
+
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true';
+    }
+
+    if (req.query.sortBy) {
+        const parts = (req.query.sortBy as string).split(':');
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+    }
     try {
         // - option one
         // const tasks = await Task.find({ owner: req.user._id });
 
         // - option two
-        await req.user.populate!('tasks');
+        await req.user.populate!({
+            path: 'tasks',
+            match,
+            options: {
+                limit: parseInt(req.query.limit as string),
+                skip: parseInt(req.query.skip as string),
+                sort,
+            },
+        });
         res.send(req.user.tasks);
     } catch (error: any) {
         res.status(500).send(error.message);
