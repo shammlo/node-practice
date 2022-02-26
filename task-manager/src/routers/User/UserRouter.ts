@@ -4,6 +4,7 @@ import { Response, Request } from 'express';
 import { ReqUserType } from '../../util/types/Types';
 const AuthMiddleware = require('../../middleware/auth/AuthMiddleware');
 const User = require('../../models/user/User');
+const multer = require('multer');
 
 router.post('/users', async (req: Request, res: Response) => {
     const user = new User(req.body);
@@ -57,6 +58,30 @@ router.post(
 router.get('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     res.send(req.user);
 });
+
+const avatar = multer({
+    dest: 'src/assets/images',
+    limits: {
+        fileSize: 1000000,
+    },
+    fileFilter(
+        _req: Request,
+        file: Express.Multer.File,
+        callback: (error?: Error | null, filename?: string | boolean) => void
+    ) {
+        if (!file.originalname.match(/\.(doc|docx)$/)) {
+            return callback(new Error('Please upload a word document'));
+        }
+        callback(undefined, true);
+    },
+});
+router.post(
+    '/users/me/avatar',
+    avatar.single('avatar'),
+    (_req: Request & ReqUserType, res: Response) => {
+        res.send();
+    }
+);
 
 router.patch('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     const updates = Object.keys(req.body);
