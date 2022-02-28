@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const sharp = require('sharp');
 import { Response, Request } from 'express';
 import { ReqUserType } from '../../util/types/Types';
 const AuthMiddleware = require('../../middleware/auth/AuthMiddleware');
 const User = require('../../models/user/User');
 const multer = require('multer');
-
+type multerFile = Express.Multer.File;
 router.post('/users', async (req: Request, res: Response) => {
     const user = new User(req.body);
 
@@ -60,7 +61,6 @@ router.get('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: 
 });
 
 const avatar = multer({
-    dest: 'src/assets/images',
     limits: {
         fileSize: 1000000,
     },
@@ -69,19 +69,54 @@ const avatar = multer({
         file: Express.Multer.File,
         callback: (error?: Error | null, filename?: string | boolean) => void
     ) {
-        if (!file.originalname.match(/\.(doc|docx)$/)) {
-            return callback(new Error('Please upload a word document'));
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return callback(new Error('Please upload a valid image'));
         }
         callback(undefined, true);
     },
 });
 router.post(
     '/users/me/avatar',
+    AuthMiddleware,
     avatar.single('avatar'),
-    (_req: Request & ReqUserType, res: Response) => {
+    async (req: Request & ReqUserType & multerFile, res: Response) => {
+        const buffer = await sharp(req.file?.buffer)
+            .resize({ width: 250, height: 250 })
+            .png()
+            .toBuffer();
+        req.user.avatar = buffer;
+        await req.user.save!();
+        res.send();
+    },
+    (error: any, _req: Request & ReqUserType, res: Response, _next: any) => {
+        res.status(400).send({ error: error.message });
+    }
+);
+
+router.delete(
+    '/users/me/avatar',
+    AuthMiddleware,
+    async (req: Request & ReqUserType, res: Response) => {
+        req.user.avatar = undefined;
+        await req.user.save!();
         res.send();
     }
 );
+
+router.get('/users/:id/avatar', async (req: Request, res: Response) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user || !user.avatar) {
+            throw new Error();
+        }
+
+        res.set('Content-Type', 'image/png');
+        res.send(user.avatar);
+    } catch (error: unknown) {
+        res.status(404).send((error as Error).message);
+    }
+});
 
 router.patch('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     const updates = Object.keys(req.body);
