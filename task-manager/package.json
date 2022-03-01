@@ -11,6 +11,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@sendgrid/mail": "^7.6.1",
         "@types/jsonwebtoken": "^8.5.8",
         "@types/multer": "^1.4.7",
         "bcrypt": "^5.0.1",
