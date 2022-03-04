@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sharp = require('sharp');
+const { welcomeMessage, goodbyeMessage } = require('../../emails/Account');
 import { Response, Request } from 'express';
 import { ReqUserType } from '../../util/types/Types';
 const AuthMiddleware = require('../../middleware/auth/AuthMiddleware');
@@ -12,6 +13,7 @@ router.post('/users', async (req: Request, res: Response) => {
 
     try {
         await user.save();
+        welcomeMessage(user.email, user.name);
         const token = await user.generateAuthToken();
         res.status(201).send({ user, token });
     } catch (error: unknown) {
@@ -140,6 +142,7 @@ router.patch('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res
 router.delete('/users/me', AuthMiddleware, async (req: Request & ReqUserType, res: Response) => {
     try {
         await req.user?.remove!();
+        goodbyeMessage(req.user.email, req.user.name);
         return res.send(req.user);
     } catch (error: any) {
         return res.status(500).send(error.message);

@@ -1,8 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-require('./database/mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
+require('./database/mongoose');
 
 const userRouter = require('./routers/User/UserRouter');
 const taskRouter = require('./routers/Task/TaskRouter');

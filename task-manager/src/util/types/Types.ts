@@ -9,6 +9,7 @@ export interface UserType {
     age: number;
     __v: number;
     tokens: any;
+    avatar: Buffer | undefined;
     tasks?: TaskType[];
     save?: () => Promise<UserType>;
     remove?: () => Promise<void>;
@@ -44,7 +45,7 @@ export interface TaskType {
     __v: number;
 }
 
-type custom = keyof UserType;
+// type custom = keyof UserType;
 
 export interface ReqUserType {
     user: UserType;
