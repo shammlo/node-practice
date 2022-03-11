@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const socketIO = require('socket.io');
-// import { Request, Response } from 'express';
+const Filters = require('bad-words');
 import { Socket } from 'socket.io';
 // ----------------------------------------------------------------
 const app = express();
@@ -19,11 +19,28 @@ io.on('connection', (socket: Socket) => {
     console.log('New user connected');
 
     socket.emit('welcome', 'Welcome to Socket.io test server');
+    socket.broadcast.emit('message', 'New user joined');
 
-    socket.on('cl-message', (msj: string) => {
-        console.log('Client message received');
-        io.emit('message', msj);
+    socket.on('client-message', (msj: string, callback: (message?: string) => void) => {
+        const filter = new Filters();
+        if (filter.isProfane(msj)) {
+            callback('Profanity is not allowed');
+            return io.emit('server-message', false);
+        }
+        io.emit('server-message', msj);
+        callback();
     });
+
+    socket.on('disconnect', () => {
+        io.emit('message', 'User was disconnected');
+    });
+    socket.on(
+        'geo-message',
+        (geo: { latitude: number; longitude: number }, callback: (message?: string) => void) => {
+            io.emit('message', `https://www.google.com/maps/@${geo.latitude},${geo.longitude},13z`);
+            callback();
+        }
+    );
 });
 
 // --------------------------------
