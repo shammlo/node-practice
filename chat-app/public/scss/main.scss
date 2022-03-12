@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 body {
     margin: 0;
     padding-bottom: 3rem;
@@ -8,59 +13,67 @@ body {
     padding: 0 1rem;
     margin: 0 1rem;
 }
-#form {
-    background: rgba(0, 0, 0, 0.15);
-    padding: 0.25rem;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    height: 3rem;
-    box-sizing: border-box;
-    backdrop-filter: blur(10px);
-    width: 100%;
-}
-#input {
-    border: none;
-    padding: 0 1rem;
-    flex-grow: 1;
-    border-radius: 2rem;
-    margin: 0.25rem;
-}
-#input:focus {
-    outline: none;
-}
-#form > button {
-    background: #333;
-    border: none;
-    padding: 0 2rem;
-    margin: 0.25rem;
-    border-radius: 3px;
-    outline: none;
-    color: #fff;
-    cursor: pointer;
-    &:hover {
-        background: rgb(59, 59, 59);
-    }
 
-    &:disabled {
-        background: rgb(75, 75, 75);
-        cursor: not-allowed;
-        // color: #333;
+.chat {
+    padding-top: 1rem;
+    &_form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        width: 100%;
+
+        .chat_input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 2rem;
+            margin: 0.25rem;
+        }
+        .chat_input:focus {
+            outline: none;
+        }
+
+        & > button {
+            background: #333;
+            border: none;
+            padding: 0 2rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+            color: #fff;
+            cursor: pointer;
+            &:hover {
+                background: rgb(59, 59, 59);
+            }
+
+            &:disabled {
+                background: rgb(75, 75, 75);
+                cursor: not-allowed;
+                // color: #333;
+            }
+        }
     }
 }
 
-#messages {
+.messages_list {
     list-style-type: none;
     margin: 0;
     padding: 0;
-}
-#messages > li {
-    padding: 0.5rem 1rem;
-}
-#messages > li:nth-child(odd) {
-    background: #efefef;
+
+    & > li {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+    }
+    & > li:nth-child(odd) {
+        background: #efefef;
+    }
 }
 .btn {
     background: #333;
@@ -86,4 +99,11 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    padding: 1rem 0;
+}
+
+.message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
