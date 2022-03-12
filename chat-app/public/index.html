@@ -13,13 +13,42 @@
                 <h2>Chat App</h2>
                 <button class="btn" id="location">Send location</button>
             </div>
-
-            <ul id="messages"></ul>
-            <form id="form" action="">
-                <input id="input" autocomplete="off" /><button class="btn" id="send">Send</button>
-            </form>
+            <main class="main">
+                <div class="chat">
+                    <ul class="messages_list" id="messages_list"></ul>
+                    <form class="chat_form" id="form" action="">
+                        <input class="chat_input" id="input" autocomplete="off" /><button
+                            class="btn"
+                            id="send"
+                        >
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </main>
         </div>
+        <!-- * Templates -->
+        <script id="message-template" type="text/html">
+            <div>
+                <p>This is a template message!</p>
+            </div>
+        </script>
+        <script id="location-template" type="text/html">
+                    <li>
+                       <a href={{url}} target="_blank">{{text}}</a>
+                    </li>
+                <!--* Scripts -->
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js">
+        </script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/chat.js"></script>
+        <script src="/js/chat.js" type="module"></script>
     </body>
 </html>
