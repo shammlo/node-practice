@@ -1,22 +1,46 @@
+import Mustache from 'https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.js';
 const socket = io();
 
 const form = document.querySelector('#form');
 const input = document.querySelector('#input');
 const sendButton = document.querySelector('#send');
-const messageList = document.querySelector('#messages');
+const messageList = document.querySelector('#messages_list');
 const geoButton = document.querySelector('#location');
+const locationTemplate = document.querySelector('#location-template').innerHTML;
+
+// ----------------------------------------------------------------
 socket.on('welcome', (message) => {
-    console.log('Welcome to the chat app', message);
+    console.log(message.text);
 });
 socket.on('message', (message) => {
-    console.log(message);
+    console.log(message.text);
 });
+
+// ----------------------------------------------------------------
+// **** LOCATION TEMPLATE ****
+
+socket.on('server-message-url', ({ text: { url, text } }) => {
+    const html = Mustache.render(locationTemplate, {
+        url,
+        text,
+    });
+    messageList.insertAdjacentHTML('beforeend', html);
+});
+
+// ----------------------------------------------------------------
 socket.on('server-message', (msj) => {
-    if (!msj) {
+    const li = document.createElement('li');
+
+    if (!msj.text) {
         return;
     }
-    const li = document.createElement('li');
-    li.innerHTML = msj;
+    const html = `
+        <div class="message">
+            <p class="message_text">${msj.text}</p>
+            <p class="message_time">${msj.createdAt && moment(msj.createdAt).format('h:mm a')}</p>
+        </div>
+    `;
+    li.innerHTML = html;
     messageList.appendChild(li);
 });
 
@@ -49,7 +73,6 @@ geoButton.addEventListener('click', (e) => {
                     return console.log(error);
                 }
                 geoButton.removeAttribute('disabled');
-                console.log('Location shared!');
             }
         );
     });
