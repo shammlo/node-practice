@@ -1,0 +1,26 @@
+.btn {
+    background: #333;
+    border: none;
+    padding: 1rem 1rem;
+    border-radius: 5px;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 1rem;
+    max-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    &:hover {
+        background: #444;
+    }
+    &:disabled {
+        background: rgb(75, 75, 75);
+        cursor: not-allowed;
+        // color: #333;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}

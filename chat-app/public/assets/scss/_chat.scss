@@ -1,0 +1,76 @@
+.app .main {
+    .chat {
+        position: relative;
+        height: 100%;
+        &_form {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.25rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
+
+            display: flex;
+            align-items: center;
+            height: var(--chat-input-height);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            width: 100%;
+
+            .chat_input {
+                border: none;
+                padding: 0 1rem;
+                flex-grow: 1;
+                border-radius: 4px;
+                // margin: 0.25rem
+                height: 2.5rem;
+            }
+            .chat_input:focus {
+                outline: none;
+            }
+
+            & > button {
+                background: #333;
+                border: none;
+                padding: 1.2rem 1.5rem;
+
+                border-radius: 3px;
+                outline: none;
+                color: #fff;
+                cursor: pointer;
+                &:hover {
+                    background: rgb(59, 59, 59);
+                }
+
+                &:disabled {
+                    background: rgb(75, 75, 75);
+                    cursor: not-allowed;
+                    // color: #333;
+                }
+            }
+        }
+
+        .message {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .messages_list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            height: calc(100% - var(--chat-input-height));
+
+            & > li {
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+
+                &:not(:first-child) {
+                    margin-top: 0.5rem;
+                }
+            }
+            & > li:nth-child(odd) {
+                background: #efefef;
+            }
+        }
+    }
+}
