@@ -20,15 +20,18 @@
                 padding: 0 1rem;
                 flex-grow: 1;
                 border-radius: 4px;
-                // margin: 0.25rem
+                border-width: 1px;
+                border-color: #a9a6bd;
                 height: 2.5rem;
-            }
-            .chat_input:focus {
-                outline: none;
+                &:focus {
+                    border-color: var(--btn-c);
+                    background-color: #fff;
+                    box-shadow: 0 0 3px 3px rgb(137 123 173 / 30%);
+                    outline: 0 !important;
+                }
             }
 
             & > button {
-                background: #333;
                 border: none;
                 padding: 1.2rem 1.5rem;
 
@@ -36,9 +39,6 @@
                 outline: none;
                 color: #fff;
                 cursor: pointer;
-                &:hover {
-                    background: rgb(59, 59, 59);
-                }
 
                 &:disabled {
                     background: rgb(75, 75, 75);
@@ -47,7 +47,11 @@
                 }
             }
         }
-
+        &_wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
         .message {
             display: flex;
             justify-content: space-between;
@@ -56,21 +60,22 @@
 
         .messages_list {
             list-style-type: none;
-            margin: 0;
-            padding: 0;
-            height: calc(100% - var(--chat-input-height));
+            max-height: calc(100vh - (var(--header-height) + 4rem));
+            flex: 1;
+            // height: calc(100% - var(--chat-input-height));
+            overflow-y: auto;
 
             & > li {
                 padding: 0.5rem 1rem;
                 border-radius: 6px;
-
+                max-width: fit-content;
                 &:not(:first-child) {
                     margin-top: 0.5rem;
                 }
             }
-            & > li:nth-child(odd) {
-                background: #efefef;
-            }
+            // & > li:nth-child(odd) {
+            //     background: #efefef;
+            // }
         }
     }
 }
