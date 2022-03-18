@@ -3,7 +3,7 @@
         position: relative;
         height: 100%;
         &_form {
-            background: rgba(0, 0, 0, 0.15);
+            background: var(--bg-c-dark);
             padding: 0.25rem;
             padding-right: 1rem;
             padding-left: 1rem;
@@ -23,10 +23,11 @@
                 border-width: 1px;
                 border-color: #a9a6bd;
                 height: 2.5rem;
+                background-color: var(--bg-c-2);
+                color: var(--text-c);
                 &:focus {
-                    border-color: var(--btn-c);
-                    background-color: #fff;
-                    box-shadow: 0 0 3px 3px rgb(137 123 173 / 30%);
+                    border-color: var(--text-c);
+                    box-shadow: 0 0 3px 3px rgba(158, 158, 158, 0.3);
                     outline: 0 !important;
                 }
             }
@@ -52,11 +53,6 @@
             flex-direction: column;
             height: 100%;
         }
-        .message {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
 
         .messages_list {
             list-style-type: none;
@@ -64,13 +60,26 @@
             flex: 1;
             // height: calc(100% - var(--chat-input-height));
             overflow-y: auto;
+            background-color: var(--bg-c-dark);
 
-            & > li {
-                padding: 0.5rem 1rem;
-                border-radius: 6px;
-                max-width: fit-content;
+            & > div {
                 &:not(:first-child) {
                     margin-top: 0.5rem;
+                }
+            }
+            .message {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                border-radius: 18px;
+                white-space: pre-wrap;
+                &_text {
+                    font-size: 18px;
+                }
+
+                a.message_text:hover {
+                    text-decoration: underline;
                 }
             }
             // & > li:nth-child(odd) {
