@@ -1,8 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@import './base';
-@import './sidebar';
-@import './chat';
-@import './buttons';
-@import './header';
+@forward './base';
+@forward './sidebar';
+@forward './chat';
+@forward './buttons';
+@forward './header';
+@forward './inputs';
+@forward './login';

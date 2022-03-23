@@ -3,7 +3,7 @@
         position: relative;
         height: 100%;
         &_form {
-            background: var(--bg-c-dark);
+            background: var(--bg-c-secondary-dark);
             padding: 0.25rem;
             padding-right: 1rem;
             padding-left: 1rem;
@@ -14,23 +14,6 @@
             box-sizing: border-box;
             backdrop-filter: blur(10px);
             width: 100%;
-
-            .chat_input {
-                border: none;
-                padding: 0 1rem;
-                flex-grow: 1;
-                border-radius: 4px;
-                border-width: 1px;
-                border-color: #a9a6bd;
-                height: 2.5rem;
-                background-color: var(--bg-c-2);
-                color: var(--text-c);
-                &:focus {
-                    border-color: var(--text-c);
-                    box-shadow: 0 0 3px 3px rgba(158, 158, 158, 0.3);
-                    outline: 0 !important;
-                }
-            }
 
             & > button {
                 border: none;
@@ -60,7 +43,7 @@
             flex: 1;
             // height: calc(100% - var(--chat-input-height));
             overflow-y: auto;
-            background-color: var(--bg-c-dark);
+            background-color: var(--bg-c-secondary);
 
             & > div {
                 &:not(:first-child) {
