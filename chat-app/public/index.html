@@ -13,91 +13,55 @@
     </head>
     <body>
         <div class="app relative flex-col">
-            <header class="flex justify-center items-center w-full h-16 bg-[#242526]">
-                Header
-            </header>
-            <main class="main flex">
-                <div class="sidebar">
-                    <h2>Chat App</h2>
-                </div>
-                <div class="chat flex-1">
-                    <div class="chat_wrapper">
-                        <div class="messages_list py-8 px-8" id="messages_list"></div>
-                        <form class="chat_form" id="form" action="">
-                            <input
-                                class="chat_input text-black"
-                                id="input"
-                                autocomplete="off"
-                                placeholder="Aa"
-                            />
-                            <button class="btn" id="send">
-                                <svg
-                                    version="1.1"
-                                    id="Layer_1"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    x="0px"
-                                    y="0px"
-                                    viewBox="0 0 512.001 512.001"
-                                    style="enable-background: new 0 0 512.001 512.001"
-                                    xml:space="preserve"
-                                    class="icon"
-                                >
-                                    <g>
-                                        <g>
-                                            <g>
-                                                <path
-                                                    d="M483.927,212.664L66.967,25.834C30.95,9.695-7.905,42.024,1.398,80.367l21.593,89.001
-                                            c3.063,12.622,11.283,23.562,22.554,30.014l83.685,47.915c6.723,3.85,6.738,13.546,0,17.405l-83.684,47.915
-				c-11.271,6.452-19.491,17.393-22.554,30.015L1.398,431.633c-9.283,38.257,29.507,70.691,65.569,54.534l416.961-186.83
-				C521.383,282.554,521.333,229.424,483.927,212.664z M468.609,265.151l-416.96,186.83c-7.618,3.417-15.814-3.398-13.845-11.516
-				l21.593-89.001c0.647-2.665,2.383-4.975,4.761-6.337l83.685-47.915c31.857-18.239,31.887-64.167,0-82.423l-83.685-47.916
-				c-2.379-1.362-4.115-3.672-4.761-6.337L37.804,71.535c-1.945-8.016,6.128-14.975,13.845-11.514L468.61,246.85
-				C476.522,250.396,476.542,261.596,468.609,265.151z"
-                                                />
-                                                <path
-                                                    d="M359.268,238.907l-147.519-66.1c-9.444-4.231-20.523-0.005-24.752,9.435c-4.231,9.44-0.006,20.523,9.434,24.752
-				L305.802,256l-109.37,49.006c-9.44,4.231-13.664,15.313-9.434,24.752c4.231,9.443,15.312,13.663,24.752,9.435l147.519-66.101
-				C373.996,266.495,374.006,245.51,359.268,238.907z"
-                                                />
-                                            </g>
-                                        </g>
-                                    </g>
-                                </svg>
-                            </button>
-                            <button class="btn" id="location">
-                                <p>Send location</p>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </main>
-        </div>
-        <!-- * Templates -->
-        <script id="message-template" type="text/html">
-            <div>
-                <p>This is a template message!</p>
-            </div>
-        </script>
-        <script id="location-template" type="text/html">
-                        <li>
-                            <div class="message">
-                                <a class="message_text"href={{url}} target="_blank">{{text}}</a>
-                                <p class="message_time">{{time}}</p>
+            <div class="auth flex items-center justify-center relative w-screen h-screen">
+                <div class="login">
+                    <form class="login_form flex flex-col items-center" action="/chat">
+                        <div class="w-full text-center pb-6">
+                            <h3 class="font-semibold text-2xl text-slate-200">Welcome back!</h3>
+                            <div class="colorHeaderSecondary-g5teka size16-rrJ6ag">
+                                We're so excited to see you again!
                             </div>
-                        </li>
-                <!--* Scripts -->
+                        </div>
+                        <div class="input w-full items-center">
+                            <label class="input__label">User name</label>
+                            <input
+                                class="input_element w-full p-2"
+                                type="text"
+                                name="username"
+                                autocomplete="off"
+                                value="sham"
+                            />
+                        </div>
+                        <div class="input w-full items-center mt-4">
+                            <label class="input__label">Room</label>
+                            <input
+                                class="input_element w-full p-2"
+                                type="text"
+                                name="room"
+                                autocomplete="off"
+                                value="sham"
+                            />
+                        </div>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js">
-        </script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
-            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/chat.js" type="module"></script>
+                        <button
+                            class="btn-login px-8 py-3 rounded-lg text-slate-50 font-medium bg-blue-600 w-100 hover:bg-blue-500 mt-8 bg-opacity-90 tracking-wider"
+                        >
+                            Join
+                        </button>
+
+                        <div
+                            class="flex items-center justify-center mx-auto mt-8 text-center w-full"
+                        >
+                            <h2 class="sign-up-title">Don't have an account?</h2>
+                            <div
+                                class="ml-4 cursor-pointer font-medium text-blue-400 w-100 hover:underline hover:decoration-blue-400 tracking-wider"
+                            >
+                                Register
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
