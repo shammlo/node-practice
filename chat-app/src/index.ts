@@ -4,29 +4,39 @@ const path = require('path');
 const http = require('http');
 const socketIO = require('socket.io');
 // const Filters = require('bad-words');
-import { Response } from 'express';
+import { Response, Request } from 'express';
 const { generateMessage } = require('./utils/messages/Messages');
 import { Socket } from 'socket.io';
 // ----------------------------------------------------------------
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
-
 const port = process.env.PORT || 3000;
 
 const publicDirectoryPath = path.join(__dirname, '../public');
 app.use(express.static(publicDirectoryPath));
+app.use(express.json());
+// ----------------------------------------------------------------
+interface usersType<T> {
+    username: T;
+    room: T;
+}
+const user: usersType<string | any> = {
+    username: '',
+    room: '',
+};
 
 io.on('connection', (socket: Socket) => {
     console.log('New user connected');
 
-    socket.emit('welcome', generateMessage('Welcome to the chat app'));
+    socket.emit('welcome', generateMessage('Welcome to the chat app', { username: user.username }));
     socket.broadcast.emit('message', generateMessage('New user joined'));
 
     socket.on('client-message', (text: { text: string }, callback: (message?: string) => void) => {
         socket.broadcast.emit('render-message', {
             text,
             createdAt: new Date().getTime(),
+            username: user.username,
         });
         callback();
     });
@@ -62,7 +72,9 @@ io.on('connection', (socket: Socket) => {
 
 // --------------------------------
 
-app.get('/chat', (_req: any, res: Response) => {
+app.get('/chat', (req: Request, res: Response) => {
+    console.log(req.query);
+    user.username = req.query.username;
     res.sendFile(path.join(publicDirectoryPath, 'chat.html'));
 });
 
