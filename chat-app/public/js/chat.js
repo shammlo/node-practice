@@ -2,14 +2,22 @@ import Mustache from 'https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/m
 const socket = io();
 
 const form = document.querySelector('#form');
-const input = document.querySelector('#input');
+const chatInput = document.querySelector('#chat-input');
+const loginInput = document.querySelector('.input');
 const sendButton = document.querySelector('#send');
 const geoButton = document.querySelector('#location');
 const locationTemplate = document.querySelector('#location-template').innerHTML;
+const locationTemplateServer = document.querySelector('#location-template-server').innerHTML;
 const messageList = document.querySelector('#messages_list');
 const msgTemplateClient = document.querySelector('#message-template-client').innerHTML;
 const msgTemplateServer = document.querySelector('#message-template-server').innerHTML;
 const profile = document.querySelector('.profile');
+
+// ----------------------------------------------------------------
+
+const { username, room } = Qs.parse(location.search, {
+    ignoreQueryPrefix: true,
+});
 
 // ----------------------------------------------------------------
 socket.on('welcome', (message) => {
@@ -30,13 +38,6 @@ socket.on('message', (message) => {
 // **** LOCATION TEMPLATE ****
 
 socket.on('server-message-url', ({ text: { url, text, geolocation }, createdAt }) => {
-    // const html = Mustache.render(locationTemplate, {
-    //     url,
-    //     text,
-    //     time: createdAt && moment(createdAt).format('h:mm a'),
-    // });
-    // messageList.insertAdjacentHTML('beforeend', html);
-
     addMessage(
         {
             url,
@@ -44,25 +45,12 @@ socket.on('server-message-url', ({ text: { url, text, geolocation }, createdAt }
             geolocation,
             createdAt: moment(createdAt).format('h:mm a'),
         },
-        true
+        false
     );
 });
 
 // ----------------------------------------------------------------
 socket.on('render-message', (msj) => {
-    // const li = document.createElement('li');
-    // if (!msj.text) {
-    //     return;
-    // }
-    // const html = `
-    //     <div class="message min-w-[100px]">
-    //         <p class="message_text mr-8 tracking-wide">${msj.text}</p>
-    //         <p class="message_time">${msj.createdAt && moment(msj.createdAt).format('h:mm a')}</p>
-    //     </div>
-    // `;
-    // li.innerHTML = html;
-    // li.classList.add('text-[#fff]', 'bg-[#3E4042]');
-    // messageList.appendChild(li);
     addMessage(msj, false);
 });
 
@@ -70,18 +58,21 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
     sendButton.setAttribute('disabled', 'disabled');
 
-    if (input.value.trim() === '') {
+    if (chatInput.value.trim() === '') {
         sendButton.removeAttribute('disabled');
         return;
     }
-    socket.emit('client-message', input.value, (message = 'Message delivered!') => {
+    socket.emit('client-message', chatInput.value, (message = 'Message delivered!') => {
         console.log(message);
         sendButton.removeAttribute('disabled');
     });
 
-    addMessage({ user: socket.id, text: input.value, createdAt: new Date().getTime() }, true);
-    input.value = '';
-    input.focus();
+    addMessage(
+        { username: username, text: chatInput.value, createdAt: new Date().getTime() },
+        true
+    );
+    chatInput.value = '';
+    chatInput.focus();
 });
 
 geoButton.addEventListener('click', (e) => {
@@ -105,17 +96,19 @@ geoButton.addEventListener('click', (e) => {
                 sendButton.removeAttribute('disabled');
             }
         );
+        addMessage(
+            {
+                url: `https://www.google.com/maps/@${position.coords.latitude},${position.coords.longitude},13z`,
+                text: 'This is my current location',
+                geolocation: true,
+                createdAt: moment(new Date().getTime()).format('h:mm a'),
+            },
+            true
+        );
     });
 });
 
 const addMessage = (data, isSelf = false) => {
-    // const div = document.createElement('div');
-    //     const html = Mustache.render(locationTemplate, {
-    //         url,
-    //         text,
-    //         time: createdAt && moment(createdAt).format('h:mm a'),
-    //     });
-    //     messageList.insertAdjacentHTML('beforeend', html);
     let html = '';
     if (isSelf) {
         if (data.geolocation) {
@@ -127,34 +120,39 @@ const addMessage = (data, isSelf = false) => {
             return messageList.insertAdjacentHTML('beforeend', html);
         }
         html = Mustache.render(msgTemplateClient, {
+            username: data.username,
             message: data.text,
             time: data.createdAt && moment(data.createdAt).format('h:mm a'),
         });
-        return messageList.insertAdjacentHTML('beforeend', html);
     } else {
+        if (data.geolocation) {
+            html = Mustache.render(locationTemplateServer, {
+                url: data.url,
+                text: data.text,
+                time: data.createdAt,
+            });
+            return messageList.insertAdjacentHTML('beforeend', html);
+        }
         html = Mustache.render(msgTemplateServer, {
+            username: data.username,
             message: data.text,
             time: data.createdAt && moment(data.createdAt).format('h:mm a'),
         });
-        messageList.insertAdjacentHTML('beforeend', html);
-
-        if (data.server) {
-            // html = `
-            //     <div class="text-[#fff] bg-[#3E4042]">
-            //         <div class="message min-w-[100px]">
-            //             <p class="message_text mr-8 tracking-wide">${data.text}</p>
-            //             <p class="message_time">${
-            //                 data.createdAt && moment(data.createdAt).format('h:mm a')
-            //             }</p>
-            //         </div>
-            //         server...
-            //         </div>
-            // `;
-        }
     }
-
-    // const chatContainer = document.getElementById('chatContainer');
-    // chatContainer.append(messageElement);
-    // div.innerHTML = html;
-    // adds the new div to the message container div
+    messageList.insertAdjacentHTML('beforeend', html);
 };
+
+socket.emit('join', { username, room }, (error) => {
+    if (error) {
+        const html = `
+        <div class="error">
+            <h3>
+                ${error}
+            </h3>
+        </div>
+        `;
+        // return loginInput.insertAdjacentHTML('beforeend', html);
+        alert(error);
+        location.href = '/';
+    }
+});
