@@ -13,20 +13,19 @@
     </head>
     <body>
         <div class="app relative flex-col">
-            <header
-                class="header flex justify-between items-center w-full h-16 bg-[#242526] px-4 py-4"
-            >
-                Header
-                <div class="profile p-3 bg-gray-700 cursor-pointer rounded-md"></div>
+            <header class="header flex justify-end items-center w-full h-16 bg-[#242526] px-4 py-4">
+                <div class="profile p-3 bg-[#303339] cursor-pointer rounded-md"></div>
             </header>
             <main class="main">
-                <div class="flex w-full h-full">
+                <div class="main-wrapper flex w-full h-full">
                     <div class="sidebar px-4">
-                        <h2>Chat App</h2>
+                        <div class="chat-info p-4"></div>
                     </div>
                     <div class="chat flex-1">
                         <div class="chat_wrapper">
-                            <div class="messages_list py-8 px-8" id="messages_list"></div>
+                            <div class="chat-messages py-8 px-8">
+                                <div class="messages_list" id="messages_list"></div>
+                            </div>
                             <form class="chat_form px-4" id="form" action="">
                                 <input
                                     class="input_chat"
@@ -129,7 +128,7 @@
                     <p class="message_text 	tracking-wide">{{message}}</p>
                     <p class="message_time text-sm">{{time}}</p>
                 </div>
-                <div class="options hover:bg-[#ffffff1a] cursor-pointer rounded-full grow">
+                <div class="options grow flex justify-end items-center">
                     <div class="hover:bg-[#ffffff1a] cursor-pointer rounded-full max-w-fit	">
                         <svg width="22px" height="22px" viewBox="0 0 22 22" class="">
                             <circle
@@ -160,75 +159,97 @@
         </script>
         <script id="location-template" type="text/html">
             <div class="flex justify-between items-center w-full" aria-label="Location">
-                <div class="options hover:bg-[#ffffff1a] cursor-pointer rounded-full">
-                    <svg width="22px" height="22px" viewBox="0 0 22 22" class="">
-                        <circle
-                            cx="11"
-                            cy="6"
-                            r="2"
-                            stroke-width="1px"
-                            fill="var(--icon-color)"
-                        ></circle>
-                        <circle
-                            cx="11"
-                            cy="11"
-                            r="2"
-                            stroke-width="1px"
-                            fill="var(--icon-color)"
-                        ></circle>
-                        <circle
-                            cx="11"
-                            cy="16"
-                            r="2"
-                            stroke-width="1px"
-                            fill="var(--icon-color)"
-                        ></circle>
-                    </svg>
+                <div class="options grow">
+                    <div class="hover:bg-[#ffffff1a] cursor-pointer rounded-full max-w-fit	">
+                        <svg width="22px" height="22px" viewBox="0 0 22 22" class="">
+                            <circle
+                                cx="11"
+                                cy="6"
+                                r="2"
+                                stroke-width="1px"
+                                fill="var(--icon-color)"
+                            ></circle>
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="2"
+                                stroke-width="1px"
+                                fill="var(--icon-color)"
+                            ></circle>
+                            <circle
+                                cx="11"
+                                cy="16"
+                                r="2"
+                                stroke-width="1px"
+                                fill="var(--icon-color)"
+                            ></circle>
+                        </svg>
+                    </div>
                 </div>
-                <div class="message gap-8 min-w-[100px] text-[#fff] bg-[#3E4042]">
+
+                <div class="message gap-8 min-w-[100px] text-[#fff] bg-[#3E4042] mr-3">
                     <a class="message_text tracking-wide" href="{{url}}" target="_blank"
                         >{{text}}</a
                     >
                     <p class="message_time text-sm	">{{time}}</p>
+                </div>
+                <div class="username">
+                    <p class="username_text text-sm	">{{username}}</p>
                 </div>
             </div>
         </script>
 
         <script id="location-template-server" type="text/html">
             <div class="flex justify-between items-center w-full" aria-label="Location">
-                <div class="message gap-8 min-w-[100px] text-[#fff] bg-[#3E4042]">
+                <div class="username">
+                    <p class="username_text text-sm	">{{username}}</p>
+                </div>
+                <div class="message gap-8 min-w-[100px] text-[#fff] bg-[#3E4042] ml-3">
                     <a class="message_text tracking-wide" href="{{url}}" target="_blank"
                         >{{text}}</a
                     >
                     <p class="message_time text-sm	">{{time}}</p>
                 </div>
-                <div class="options hover:bg-[#ffffff1a] cursor-pointer rounded-full">
-                    <svg width="22px" height="22px" viewBox="0 0 22 22" class="">
-                        <circle
-                            cx="11"
-                            cy="6"
-                            r="2"
-                            stroke-width="1px"
-                            fill="var(--icon-color)"
-                        ></circle>
-                        <circle
-                            cx="11"
-                            cy="11"
-                            r="2"
-                            stroke-width="1px"
-                            fill="var(--icon-color)"
-                        ></circle>
-                        <circle
-                            cx="11"
-                            cy="16"
-                            r="2"
-                            stroke-width="1px"
-                            fill="var(--icon-color)"
-                        ></circle>
-                    </svg>
+                <div class="options grow flex justify-end items-center">
+                    <div class="hover:bg-[#ffffff1a] cursor-pointer rounded-full max-w-fit	">
+                        <svg width="22px" height="22px" viewBox="0 0 22 22" class="">
+                            <circle
+                                cx="11"
+                                cy="6"
+                                r="2"
+                                stroke-width="1px"
+                                fill="var(--icon-color)"
+                            ></circle>
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="2"
+                                stroke-width="1px"
+                                fill="var(--icon-color)"
+                            ></circle>
+                            <circle
+                                cx="11"
+                                cy="16"
+                                r="2"
+                                stroke-width="1px"
+                                fill="var(--icon-color)"
+                            ></circle>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </script>
+
+        <script id="users-list" type="text/html">
+            <h2 class="mb-4 text-xl">room : {{room}}</h2>
+            <h3 class="text-lg py-1 border-b	border-gray-700	 border-solid">users</h3>
+            <ul class="">
+                {{#users}}
+                <li class="py-2">{{username}}</li>
+                {{/users}}
+            </ul>
+        </script>
+
         <!--* Scripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script
