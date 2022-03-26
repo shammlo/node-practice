@@ -44,6 +44,13 @@ io.on('connection', (socket: Socket) => {
             .to(user.room)
             .emit('message', generateMessage(user.username, `${user.username} joined`));
 
+        // --------------------------------
+        // * rendering all users in the chat Room
+        io.to(user.room).emit('room.users', {
+            room: user.room,
+            users: getUsersInRoom(user.room),
+        });
+
         callback();
     });
 
@@ -72,7 +79,7 @@ io.on('connection', (socket: Socket) => {
             socket.broadcast.to(user.room).emit(
                 'server-message-url',
 
-                generateMessage({
+                generateMessage(user.username, {
                     url: `https://www.google.com/maps/@${geo.latitude},${geo.longitude},13z`,
                     text: 'This is my current location',
                     geolocation: true,
@@ -86,7 +93,14 @@ io.on('connection', (socket: Socket) => {
     socket.on('disconnect', () => {
         const user = removeUser(socket.id);
         if (user) {
-            io.to(user.room).emit('message', generateMessage(`${user.username} has left`));
+            io.to(user.room).emit(
+                'message',
+                generateMessage(user.username, `${user.username} has left`)
+            );
+            io.to(user.room).emit('room.users', {
+                room: user.room,
+                users: getUsersInRoom(user.room),
+            });
         }
     });
 });
