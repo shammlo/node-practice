@@ -510,8 +510,33 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: relative;
 }
 
-.mr-8 {
-  margin-right: 2rem;
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mr-3 {
+  margin-right: 0.75rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .block {
@@ -538,16 +563,42 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 4rem;
 }
 
+.h-full {
+  height: 100%;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
 .w-full {
   width: 100%;
+}
+
+.w-screen {
+  width: 100vw;
 }
 
 .min-w-\[100px\] {
   min-width: 100px;
 }
 
+.max-w-fit {
+  max-width: -webkit-fit-content;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+}
+
 .flex-1 {
   flex: 1 1 0%;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.grow {
+  flex-grow: 1;
 }
 
 .border-collapse {
@@ -574,6 +625,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   align-items: center;
 }
 
+.justify-end {
+  justify-content: flex-end;
+}
+
 .justify-center {
   justify-content: center;
 }
@@ -582,16 +637,41 @@ Ensure the default browser behavior of the `hidden` attribute.
   justify-content: space-between;
 }
 
+.justify-items-end {
+  justify-items: end;
+}
+
 .gap-8 {
   gap: 2rem;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
 }
 
 .rounded-full {
   border-radius: 9999px;
 }
 
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
 .border {
   border-width: 1px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+}
+
+.border-solid {
+  border-style: solid;
+}
+
+.border-gray-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity));
 }
 
 .bg-\[\#242526\] {
@@ -599,14 +679,50 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(36 37 38 / var(--tw-bg-opacity));
 }
 
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
+.bg-blue-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+
 .bg-\[\#3E4042\] {
   --tw-bg-opacity: 1;
   background-color: rgb(62 64 66 / var(--tw-bg-opacity));
 }
 
-.bg-slate-400 {
+.bg-\[\#303339\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
+  background-color: rgb(48 51 57 / var(--tw-bg-opacity));
+}
+
+.bg-opacity-90 {
+  --tw-bg-opacity: 0.9;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .py-8 {
@@ -619,14 +735,37 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-right: 2rem;
 }
 
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .text-lg {
@@ -634,13 +773,25 @@ Ensure the default browser behavior of the `hidden` attribute.
   line-height: 1.75rem;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
 .tracking-wide {
   letter-spacing: 0.025em;
 }
 
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 
 .text-\[\#fff\] {
@@ -648,25 +799,50 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-slate-200 {
+  --tw-text-opacity: 1;
+  color: rgb(226 232 240 / var(--tw-text-opacity));
+}
+
+.text-slate-50 {
+  --tw-text-opacity: 1;
+  color: rgb(248 250 252 / var(--tw-text-opacity));
+}
+
+.text-blue-400 {
+  --tw-text-opacity: 1;
+  color: rgb(96 165 250 / var(--tw-text-opacity));
+}
+
 .underline {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
-}
-
-.decoration-white {
-  -webkit-text-decoration-color: #fff;
-          text-decoration-color: #fff;
 }
 
 .outline {
   outline-style: solid;
 }
 
+.hover\:bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-\[\#ffffff1a\]:hover {
   background-color: #ffffff1a;
 }
 
-.hover\:decoration-solid:hover {
-  -webkit-text-decoration-style: solid;
-          text-decoration-style: solid;
+.hover\:bg-blue-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.hover\:underline:hover {
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline;
+}
+
+.hover\:decoration-blue-400:hover {
+  -webkit-text-decoration-color: #60a5fa;
+          text-decoration-color: #60a5fa;
 }
