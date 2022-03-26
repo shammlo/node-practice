@@ -26,7 +26,7 @@ body,
 }
 body {
     margin: 0;
-    background: var(--bg-c);
+    background-color: var(--bg-c-secondary);
     color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
@@ -40,6 +40,17 @@ body {
     // padding: 0 1rem;
 
     flex: 1;
+
+    .main-wrapper {
+        @media screen and (max-width: 900px) {
+            flex-direction: column;
+
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+        }
+    }
 }
 .container {
     max-width: 150rem;

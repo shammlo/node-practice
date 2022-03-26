@@ -4,4 +4,8 @@
     width: 360px;
     display: block;
     color: white;
+
+    @media screen and (max-width: 1050px) {
+        width: 260px;
+    }
 }
