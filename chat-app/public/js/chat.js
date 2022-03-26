@@ -12,12 +12,37 @@ const messageList = document.querySelector('#messages_list');
 const msgTemplateClient = document.querySelector('#message-template-client').innerHTML;
 const msgTemplateServer = document.querySelector('#message-template-server').innerHTML;
 const profile = document.querySelector('.profile');
+const chatInfo = document.querySelector('.chat-info');
+const usersListTemplates = document.querySelector('#users-list').innerHTML;
 
 // ----------------------------------------------------------------
 
 const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true,
 });
+
+const autoScroll = () => {
+    // New message element
+    const $newMessage = messageList.lastElementChild;
+
+    // Height of the new message
+    const newMessageStyles = getComputedStyle($newMessage);
+    const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+    const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
+
+    // Visible height
+    const visibleHeight = messageList.offsetHeight;
+
+    // Height of messages container
+    const containerHeight = messageList.scrollHeight;
+
+    // How far have I scrolled?
+    const scrollOffset = messageList.scrollTop + visibleHeight;
+
+    if (containerHeight - newMessageHeight <= scrollOffset) {
+        messageList.scrollTop = messageList.scrollHeight;
+    }
+};
 
 // ----------------------------------------------------------------
 socket.on('welcome', (message) => {
@@ -37,9 +62,10 @@ socket.on('message', (message) => {
 // ----------------------------------------------------------------
 // **** LOCATION TEMPLATE ****
 
-socket.on('server-message-url', ({ text: { url, text, geolocation }, createdAt }) => {
+socket.on('server-message-url', ({ text: { url, text, geolocation }, createdAt, username }) => {
     addMessage(
         {
+            username,
             url,
             text,
             geolocation,
@@ -71,6 +97,7 @@ form.addEventListener('submit', (e) => {
         { username: username, text: chatInput.value, createdAt: new Date().getTime() },
         true
     );
+
     chatInput.value = '';
     chatInput.focus();
 });
@@ -102,45 +129,13 @@ geoButton.addEventListener('click', (e) => {
                 text: 'This is my current location',
                 geolocation: true,
                 createdAt: moment(new Date().getTime()).format('h:mm a'),
+                username,
             },
             true
         );
+        autoScroll();
     });
 });
-
-const addMessage = (data, isSelf = false) => {
-    let html = '';
-    if (isSelf) {
-        if (data.geolocation) {
-            html = Mustache.render(locationTemplate, {
-                url: data.url,
-                text: data.text,
-                time: data.createdAt,
-            });
-            return messageList.insertAdjacentHTML('beforeend', html);
-        }
-        html = Mustache.render(msgTemplateClient, {
-            username: data.username,
-            message: data.text,
-            time: data.createdAt && moment(data.createdAt).format('h:mm a'),
-        });
-    } else {
-        if (data.geolocation) {
-            html = Mustache.render(locationTemplateServer, {
-                url: data.url,
-                text: data.text,
-                time: data.createdAt,
-            });
-            return messageList.insertAdjacentHTML('beforeend', html);
-        }
-        html = Mustache.render(msgTemplateServer, {
-            username: data.username,
-            message: data.text,
-            time: data.createdAt && moment(data.createdAt).format('h:mm a'),
-        });
-    }
-    messageList.insertAdjacentHTML('beforeend', html);
-};
 
 socket.emit('join', { username, room }, (error) => {
     if (error) {
@@ -156,3 +151,48 @@ socket.emit('join', { username, room }, (error) => {
         location.href = '/';
     }
 });
+
+socket.on('room.users', ({ room, users }) => {
+    const html = Mustache.render(usersListTemplates, {
+        room,
+        users,
+    });
+    chatInfo.innerHTML = html;
+});
+// ----------------------------------------------------------------
+const addMessage = (data, isSelf = false) => {
+    let html = '';
+    if (isSelf) {
+        if (data.geolocation) {
+            html = Mustache.render(locationTemplate, {
+                username: data.username,
+                url: data.url,
+                text: data.text,
+                time: data.createdAt,
+            });
+            return messageList.insertAdjacentHTML('beforeend', html);
+        }
+        html = Mustache.render(msgTemplateClient, {
+            username: data.username,
+            message: data.text,
+            time: data.createdAt && moment(data.createdAt).format('h:mm a'),
+        });
+    } else {
+        if (data.geolocation) {
+            html = Mustache.render(locationTemplateServer, {
+                username: data.username,
+                url: data.url,
+                text: data.text,
+                time: data.createdAt,
+            });
+            return messageList.insertAdjacentHTML('beforeend', html);
+        }
+        html = Mustache.render(msgTemplateServer, {
+            username: data.username,
+            message: data.text,
+            time: data.createdAt && moment(data.createdAt).format('h:mm a'),
+        });
+    }
+    messageList.insertAdjacentHTML('beforeend', html);
+    autoScroll();
+};
